@@ -22,6 +22,7 @@ const bookingRouter = require('./routes/bookingRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 
 // const pug = require('pug');
+// this is recently added to see the green
 const AppError = require('./utils/appErr');
 
 const app = express();
