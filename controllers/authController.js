@@ -59,7 +59,7 @@ const signUp = catchAsync(async (req, res, next) => {
   const newUser = await User.create(filterBody);
 
   // const url = 'http://localhost:5000/me';
-  const url = `${req.protocol}://${req.get('host')}/me`; //*
+  const url = `${req.protocol}://${req.get('host')}/me`; // this only work for frontend and backend put in the same place
 
   await new Email(newUser, url).sendWelcome(); //***
 
