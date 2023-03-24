@@ -9,6 +9,7 @@ const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const globalErrorHandler = require('./controllers/errorController');
 
 const userRouter = require('./routes/userRoutes');
 
@@ -19,7 +20,7 @@ const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 
-const globalErrorHandler = require('./controllers/errorController');
+const compression = require('compression');
 
 // const pug = require('pug');
 // this is recently added to see the green
@@ -87,6 +88,8 @@ app.use(
 
 // security http headers
 app.use(helmet({ contentSecurityPolicy: false }));
+
+app.use(compression());
 
 // TEST middleware
 app.use((req, res, next) => {

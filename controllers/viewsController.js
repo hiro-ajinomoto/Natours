@@ -82,10 +82,7 @@ const getLoginForm = catchAsync(async (req, res, next) => {
 
 const getMyTours = catchAsync(async (req, res, next) => {
   //1 find all bookings
-  console.log(req.user);
   const bookings = await Booking.find({ user: req.user.id });
-
-  console.log(bookings);
 
   const tourIDs = bookings.map(booking => booking.tour.id);
 
