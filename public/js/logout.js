@@ -8,7 +8,8 @@ export const logout = async () => {
     const res = await axios(
       {
         method: 'GET',
-        url: 'http://localhost:5000/api/v1/users/logout'
+        // url: 'http://localhost:5000/api/v1/users/logout',
+        url: '/api/v1/users/logout'
       },
       {
         withCredentials: true,

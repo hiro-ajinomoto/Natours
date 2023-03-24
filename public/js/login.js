@@ -9,7 +9,8 @@ export const login = async (email, password) => {
       {
         // no need to import axios right here, we import by cdn, we use parcel then we use npm
         method: 'POST',
-        url: 'http://localhost:5000/api/v1/users/login', // this has been saved the jwt in cookies -> localhost:5000 != http://127.1.0.0
+        // url: 'http://localhost:5000/api/v1/users/login', // this has been saved the jwt in cookies -> localhost:5000 != http://127.1.0.0
+        url: '/api/v1/users/login', // this work as in pug
         data: {
           email,
           password

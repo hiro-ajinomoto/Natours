@@ -89,7 +89,7 @@ app.use(
 // security http headers
 app.use(helmet({ contentSecurityPolicy: false }));
 
-app.use(compression());
+app.use(compression()); // compress texts sent to clients
 
 // TEST middleware
 app.use((req, res, next) => {
