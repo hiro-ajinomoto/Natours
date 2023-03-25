@@ -24,7 +24,7 @@ const app = require('./app');
 //   .then(() => console.l og('DB connection established'));
 
 const server = async () => {
-  const port = 5000 || process.env.PORT;
+  const port = process.env.PORT || 5000;
 
   // console.log('argv: ', process.argv);
 
