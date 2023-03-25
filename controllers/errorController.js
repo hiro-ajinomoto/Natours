@@ -103,35 +103,38 @@ const globalErrorHandler = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     //send meaningful error message to clients
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    let error = Object.assign(err); //*
 
-    error.message = err.message;
+    if (err) {
+      let error = Object.assign(err); //*
 
-    if (error.name === 'CastError') {
-      // cái này đáng ra nên là CastError - handle invalid ID - to clients / do lỗi mongose nên không thực hiện được chức năng này
-      // hoặc có thể do mongoose đã biến lỗi invalid ID thành error, không còn CastError nữa -> có thể xử lý theo 1 cách khác
-      error = handleCastErrorDB(err);
+      error.message = err.message;
+
+      if (error.name === 'CastError') {
+        // cái này đáng ra nên là CastError - handle invalid ID - to clients / do lỗi mongose nên không thực hiện được chức năng này
+        // hoặc có thể do mongoose đã biến lỗi invalid ID thành error, không còn CastError nữa -> có thể xử lý theo 1 cách khác
+        error = handleCastErrorDB(err);
+      }
+
+      // handle duplicate filed to clients
+      // cái này chỉ catch được lỗi khi nó ra được đúng lỗi
+      // tạm thời mongoose phiên bản đang có vấn đề nên không thể thực hiện được mấy chức năng này
+      if (err.name === 11000) {
+        error = handleDuplicateFieldsDB(error);
+      }
+
+      if (err.name === 'Error') {
+        error = handleValidationErrors(error);
+      }
+
+      if (err.message.startsWith('JsonWebTokenError'))
+        err = handleJWTError(error);
+
+      if (err.name === 'TokenExpiredError') err = handleJWTExpiredError(error);
+      // because all err.name is default set 'Error' so we cant decided cases base on err.name
+      // we could use the err.mess startsWith('TokenExpiredError')
+
+      sendErrorProd(error, req, res);
     }
-
-    // handle duplicate filed to clients
-    // cái này chỉ catch được lỗi khi nó ra được đúng lỗi
-    // tạm thời mongoose phiên bản đang có vấn đề nên không thể thực hiện được mấy chức năng này
-    if (err.name === 11000) {
-      error = handleDuplicateFieldsDB(error);
-    }
-
-    if (err.name === 'Error') {
-      error = handleValidationErrors(error);
-    }
-
-    if (err.message.startsWith('JsonWebTokenError'))
-      err = handleJWTError(error);
-
-    if (err.name === 'TokenExpiredError') err = handleJWTExpiredError(error);
-    // because all err.name is default set 'Error' so we cant decided cases base on err.name
-    // we could use the err.mess startsWith('TokenExpiredError')
-
-    sendErrorProd(error, req, res);
   }
 };
 
