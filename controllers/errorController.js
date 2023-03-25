@@ -23,9 +23,6 @@ const sendErrorDev = (err, req, res) => {
 };
 
 const globalErrorHandler = (err, req, res, next) => {
-  // cái này sẽ catch hết tất cả các event lỗi đang chạy ngầm
-  // if err exist we could set the err.status code
-
   err.statusCode = err.statusCode || 500;
 
   err.status = err.status || 'error';
