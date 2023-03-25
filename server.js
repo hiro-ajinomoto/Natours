@@ -24,7 +24,7 @@ const app = require('./app');
 //   .then(() => console.l og('DB connection established'));
 
 const server = async () => {
-  const port = process.env.PORT || 5000;
+  const port = process.env.PORT || 5000; // PORT must be put front of the 5000 for heroku to work
 
   // console.log('argv: ', process.argv);
 
