@@ -26,7 +26,10 @@ const app = require('./app');
 const server = async () => {
   const port = process.env.PORT || 5000; // PORT must be put front of the 5000 for heroku to work
 
-  // console.log('argv: ', process.argv);
+  // console.log('argv: ', process.argv[2]);
+
+  process.env.NODE_ENV = 'production';
+  console.log('NODE_ENV ', process.env.NODE_ENV);
 
   // const server =
   app.listen(port, () => {

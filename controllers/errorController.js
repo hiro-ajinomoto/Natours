@@ -105,8 +105,8 @@ const globalErrorHandler = (err, req, res, next) => {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
 
     if (err) {
-      let error = Object.assign(err); //*
-
+      // let error = Object.assign(err); //*
+      let error = { ...err };
       error.message = err.message;
 
       if (error.name === 'CastError') {
