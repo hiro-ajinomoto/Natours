@@ -2,7 +2,7 @@ const AppError = require('../utils/appErr');
 
 const handleCastErrorDB = err => {
   // const message = `Invalid ${err.path}: ${err.value}`;
-  const message = `Invalid ID`;
+  const message = `Invalid ${err.path}: ${err.value}.`;
   return new AppError(message, 400);
 };
 
@@ -14,14 +14,14 @@ const handleDuplicateFieldsDB = err => {
   return new AppError(message, 400);
 };
 
-const handleValidationErrors = err => {
-  // error trả về không giống do khác phiên bản nên chức năng này xem như vứt
-  const errors = Object.values(err.errors).map(ele => ele.message);
+// const handleValidationErrors = err => {
+//   // error trả về không giống do khác phiên bản nên chức năng này xem như vứt
+//   const errors = Object.values(err.errors).map(ele => ele.message);
 
-  const messages = `Invalid input data: ${errors.join(', ')}`;
+//   const messages = `Invalid input data: ${errors.join(', ')}`;
 
-  return new AppError(messages, 400);
-};
+//   return new AppError(messages, 400);
+// };
 
 const handleJWTError = err =>
   new AppError('Invalid token, please login again', 401);
@@ -118,18 +118,18 @@ const globalErrorHandler = (err, req, res, next) => {
       // handle duplicate filed to clients
       // cái này chỉ catch được lỗi khi nó ra được đúng lỗi
       // tạm thời mongoose phiên bản đang có vấn đề nên không thể thực hiện được mấy chức năng này
-      if (err.name === 11000) {
+      if (error.name === 11000) {
         error = handleDuplicateFieldsDB(error);
       }
 
-      if (err.name === 'Error') {
-        error = handleValidationErrors(error);
-      }
+      // if (error.name === 'Error') {
+      //   error = handleValidationErrors(error);
+      // }
 
-      if (err.message.startsWith('JsonWebTokenError'))
-        err = handleJWTError(error);
+      if (error.name === 'JsonWebTokenError') error = handleJWTError(error);
 
-      if (err.name === 'TokenExpiredError') err = handleJWTExpiredError(error);
+      if (error.name === 'TokenExpiredError')
+        error = handleJWTExpiredError(error);
       // because all err.name is default set 'Error' so we cant decided cases base on err.name
       // we could use the err.mess startsWith('TokenExpiredError')
 
